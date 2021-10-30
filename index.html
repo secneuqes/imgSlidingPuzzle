@@ -27,6 +27,7 @@
     <div id="main" class="main">
         <canvas id="puzzle"></canvas>
     </div>
+    <img id="preview" src="" class="mt-5 mb-5" style="object-fit: cover; object-position: 100% 0;">
 
     <script>
         var context = document.getElementById("puzzle").getContext("2d");
@@ -46,6 +47,7 @@
         ];
         const rand_int_len = Math.floor(Math.random() * (item.length-2));
         img.src = item[rand_int_len];
+        $('#preview').attr('src',item[rand_int_len]);
 
         img.addEventListener('load', drawTiles, false);
 
