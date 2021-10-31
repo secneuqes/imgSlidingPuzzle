@@ -45,10 +45,10 @@
             'https://i.ibb.co/F5k94yz/Kakao-Talk-20211031-022515919-12.jpg',
             'https://i.ibb.co/nkxVCy8/Kakao-Talk-20211031-022515919-06.jpg',
         ];
-        const rand_int_len = Math.floor(Math.random() * (item.length-2));
+        const rand_int_len = Math.floor(Math.random() * (item.length - 2));
         img.src = item[rand_int_len];
-        $('#preview').attr('src',item[rand_int_len]);
-        
+        $('#preview').attr('src', item[rand_int_len]);
+
         // img.width = document.getElementById('puzzle').width;
         img.addEventListener('load', drawTiles, false);
 
@@ -69,6 +69,8 @@
         let solved = false;
 
         let shuffledDeck = shuffle(makeCordArray(tileCount));
+        solvableContent(shuffledDeck);
+        console.log("solvable: ",shuffledDeck);
 
         setBoard();
 
@@ -94,6 +96,48 @@
                 setTimeout(function () { alert("You solved it!"); }, 500);
             };
         };
+
+        function solvableContent(oneDArr) {
+            let filterSolvable = [];
+            oneDArr.forEach(elem => {
+                filterSolvable.push(elem[0] * 4 + elem[1]);
+            });
+            let inversions = 0;
+            if (tileCount % 2 === 1) {
+                for (let k = 0; k < filterSolvable.length - 2; ++k) {
+                    for (let t = k + 1; t < filterSolvable.length - 1; ++t) {
+                        if (filterSolvable[k] > filterSolvable[t]) {
+                            inversions++;
+                        }
+                    }
+                }
+                if (inversions % 2 === 0) {
+                    console.log("solvable");
+                    shuffledDeck = oneDArr;
+                } else {
+                    console.log("un-solvable");
+                    solvableContent(shuffle(makeCordArray(tileCount)));
+                }
+            } else {
+                for (let k = 0; k < filterSolvable.length - 2; ++k) {
+                    for (let t = k + 1; t < filterSolvable.length - 1; ++t) {
+                        if (filterSolvable[k] > filterSolvable[t]) {
+                            inversions++;
+                        }
+                    }
+                }
+                if (Math.floor(filterSolvable.indexOf(0) / tileCount) % 2 === 1 && inversions % 2 === 0) {
+                    console.log("solvable");
+                    shuffledDeck = oneDArr;
+                } else if (Math.floor(filterSolvable.indexOf(0) / tileCount) % 2 === 0 && inversions % 2 === 1) {
+                    console.log("solvable");
+                    shuffledDeck = oneDArr;
+                } else {
+                    console.log("un-solvable");
+                    solvableContent(shuffle(makeCordArray(tileCount)));
+                }
+            }
+        }
 
         function distance(x1, y1, x2, y2) {
             return Math.abs(x1 - x2) + Math.abs(y1 - y2);
@@ -151,7 +195,7 @@
                     boardParts[i][j] = new Object;
                     boardParts[i][j].x = shuffledDeck[numa][0];
                     boardParts[i][j].y = shuffledDeck[numa][1];
-                    if (shuffledDeck[numa][0] === 3 && shuffledDeck[numa][1] === 3) {
+                    if (shuffledDeck[numa][0] === tileCount - 1 && shuffledDeck[numa][1] === tileCount - 1) {
                         threeLocx = i;
                         threeLocy = j;
                         emptyLoc.x = threeLocx
