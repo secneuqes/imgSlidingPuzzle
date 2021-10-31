@@ -78,6 +78,7 @@
             tileCount = this.value;
             tileSize = boardSize / tileCount;
             shuffledDeck = shuffle(makeCordArray(tileCount));
+            solvableContent(shuffledDeck);
             setBoard();
             drawTiles();
         };
@@ -126,10 +127,10 @@
                         }
                     }
                 }
-                if (Math.floor(filterSolvable.indexOf(0) / tileCount) % 2 === 1 && inversions % 2 === 0) {
+                if (Math.floor(filterSolvable.indexOf(0) / tileCount - 1) % 2 === 1 && inversions % 2 === 0) {
                     console.log("solvable");
                     shuffledDeck = oneDArr;
-                } else if (Math.floor(filterSolvable.indexOf(0) / tileCount) % 2 === 0 && inversions % 2 === 1) {
+                } else if (Math.floor(filterSolvable.indexOf(0) / tileCount - 1) % 2 === 0 && inversions % 2 === 1) {
                     console.log("solvable");
                     shuffledDeck = oneDArr;
                 } else {
@@ -141,7 +142,7 @@
 
         function distance(x1, y1, x2, y2) {
             return Math.abs(x1 - x2) + Math.abs(y1 - y2);
-        };
+        }
 
         function slideTile(toLoc, fromLoc) {
             if (!solved) {
@@ -152,8 +153,8 @@
                 toLoc.x = fromLoc.x;
                 toLoc.y = fromLoc.y;
                 checkSolved();
-            };
-        };
+            }
+        }
 
         function checkSolved() {
             let flag = true;
@@ -161,14 +162,14 @@
             // console.log(boardParts, shuffledDeck)
             for (let i = 0; i < tileCount; ++i) {
                 for (let j = 0; j < tileCount; ++j) {
-                    if (boardParts[i][j].x != shuffledDeck[numb][0] || boardParts[i][j].y != shuffledDeck[numb][1]) {
+                    if (boardParts[i][j].x !== i || boardParts[i][j].y !== j) {
                         flag = false;
                     };
                     numb++;
-                };
-            };
+                }
+            }
             solved = flag;
-        };
+        }
 
         function drawTiles() {
             context.clearRect(0, 0, boardSize, boardSize);
@@ -179,10 +180,10 @@
                     if (i != emptyLoc.x || j != emptyLoc.y || solved == true) {
                         context.drawImage(img, x * tileSize, y * tileSize, tileSize, tileSize,
                             i * tileSize, j * tileSize, tileSize, tileSize);
-                    };
-                };
-            };
-        };
+                    }
+                }
+            }
+        }
 
         function setBoard() {
             let numa = 0;
@@ -201,22 +202,22 @@
                         emptyLoc.x = threeLocx
                         emptyLoc.y = threeLocy;
                     }
-                    console.log(i, j, boardParts[i][j].x, boardParts[i][j].y);
+                    // console.log(i, j, boardParts[i][j].x, boardParts[i][j].y);
                     numa++;
-                };
-            };
+                }
+            }
             solved = false;
-        };
+        }
 
         function makeCordArray(tileCount) {
             let randArray = new Array();
             for (let i = 0; i < tileCount; ++i) {
                 for (let j = 0; j < tileCount; ++j) {
                     randArray.push([i, j]);
-                };
-            };
+                }
+            }
             return randArray;
-        };
+        }
 
         function shuffle(array) {
             let currentIndex = array.length, randomIndex;
@@ -225,9 +226,9 @@
                 currentIndex--;
                 [array[currentIndex], array[randomIndex]] = [
                     array[randomIndex], array[currentIndex]];
-            };
+            }
             return array;
-        };
+        }
 
     </script>
 
