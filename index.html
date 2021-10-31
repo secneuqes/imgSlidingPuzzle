@@ -30,7 +30,7 @@
     <img id="preview" src="" class="mt-5 mb-5" style="object-fit: cover; object-position: 100% 0;">
 
     <script>
-        var context = document.getElementById("puzzle").getContext("2d");
+        let context = document.getElementById("puzzle").getContext("2d");
         if (window.innerWidth <= 600) {
             $('#puzzle').attr('width', `${window.innerWidth * 0.8}px`);
             $('#puzzle').attr('height', `${window.innerWidth * 0.8}px`);
@@ -38,42 +38,44 @@
             $('#puzzle').attr('width', '480px');
             $('#puzzle').attr('height', '480px');
         }
-        var img = new Image();
-        var item = [
-            'https://media.vlpt.us/images/kingsparkdev/post/79866efa-73e7-4cfe-ad6f-1f9e1053b2b5/KakaoTalk_20211031_022515919.jpg',
-            'https://media.vlpt.us/images/kingsparkdev/post/4f8d7f7a-bbc8-470f-883f-f70602a2a053/KakaoTalk_20211031_022515919_01.jpg',
-            'https://media.vlpt.us/images/kingsparkdev/post/58475751-55ec-4279-b6e1-e8b351c86a95/KakaoTalk_20211031_022515919_02.jpg',
-            'https://media.vlpt.us/images/kingsparkdev/post/37ec690b-7fa9-48c4-8dfc-9429b5c060a3/KakaoTalk_20211031_022515919_03.jpg'
+        let img = new Image();
+        let item = [
+            'https://i.ibb.co/Cn0xQd6/Kakao-Talk-20211031-022515919-14.jpg',
+            'https://i.ibb.co/X7tJQTN/Kakao-Talk-20211031-022515919-13.jpg',
+            'https://i.ibb.co/F5k94yz/Kakao-Talk-20211031-022515919-12.jpg',
+            'https://i.ibb.co/nkxVCy8/Kakao-Talk-20211031-022515919-06.jpg',
         ];
         const rand_int_len = Math.floor(Math.random() * (item.length-2));
         img.src = item[rand_int_len];
         $('#preview').attr('src',item[rand_int_len]);
-
+        
+        // img.width = document.getElementById('puzzle').width;
         img.addEventListener('load', drawTiles, false);
 
-        var boardSize = document.getElementById('puzzle').width;
-        var tileCount = document.getElementById('scale').value;
-        var tileSize = boardSize / tileCount;
+        let boardSize = document.getElementById('puzzle').width;
+        let tileCount = document.getElementById('scale').value;
+        let tileSize = boardSize / tileCount;
 
-        var boardParts = new Object;
+        let boardParts = new Object;
 
-        var clickLoc = new Object;
+        let clickLoc = new Object;
         clickLoc.x = 0;
         clickLoc.y = 0;
 
-        var emptyLoc = new Object;
+        let emptyLoc = new Object;
         emptyLoc.x = 0;
         emptyLoc.y = 0;
 
-        var solved = false;
+        let solved = false;
 
-        var randomCord;
+        let shuffledDeck = shuffle(makeCordArray(tileCount));
 
         setBoard();
 
         document.getElementById('scale').onchange = function () {
             tileCount = this.value;
             tileSize = boardSize / tileCount;
+            shuffledDeck = shuffle(makeCordArray(tileCount));
             setBoard();
             drawTiles();
         };
@@ -110,11 +112,12 @@
         };
 
         function checkSolved() {
-            var flag = true;
-            var numb = 0;
-            for (var i = 0; i < tileCount; ++i) {
-                for (var j = 0; j < tileCount; ++j) {
-                    if (boardParts[i][j].x != randomCord[numb][0] || boardParts[i][j].y != randomCord[numb][1]) {
+            let flag = true;
+            let numb = 0;
+            // console.log(boardParts, shuffledDeck)
+            for (let i = 0; i < tileCount; ++i) {
+                for (let j = 0; j < tileCount; ++j) {
+                    if (boardParts[i][j].x != shuffledDeck[numb][0] || boardParts[i][j].y != shuffledDeck[numb][1]) {
                         flag = false;
                     };
                     numb++;
@@ -125,10 +128,10 @@
 
         function drawTiles() {
             context.clearRect(0, 0, boardSize, boardSize);
-            for (var i = 0; i < tileCount; ++i) {
-                for (var j = 0; j < tileCount; ++j) {
-                    var x = boardParts[i][j].x;
-                    var y = boardParts[i][j].y;
+            for (let i = 0; i < tileCount; ++i) {
+                for (let j = 0; j < tileCount; ++j) {
+                    let x = boardParts[i][j].x;
+                    let y = boardParts[i][j].y;
                     if (i != emptyLoc.x || j != emptyLoc.y || solved == true) {
                         context.drawImage(img, x * tileSize, y * tileSize, tileSize, tileSize,
                             i * tileSize, j * tileSize, tileSize, tileSize);
@@ -138,29 +141,33 @@
         };
 
         function setBoard() {
-            randomCord = makeCordArray(tileCount);
-            randomCord = shuffle(randomCord);
-            var numa = 0;
+            let numa = 0;
+            let threeLocx = 0;
+            let threeLocy = 0;
             boardParts = new Array(tileCount);
-            for (var i = 0; i < tileCount; ++i) {
+            for (let i = 0; i < tileCount; ++i) {
                 boardParts[i] = new Array(tileCount);
-                for (var j = 0; j < tileCount; ++j) {
+                for (let j = 0; j < tileCount; ++j) {
                     boardParts[i][j] = new Object;
-                    boardParts[i][j].x = randomCord[numa][0];
-                    boardParts[i][j].y = randomCord[numa][1];
+                    boardParts[i][j].x = shuffledDeck[numa][0];
+                    boardParts[i][j].y = shuffledDeck[numa][1];
+                    if (shuffledDeck[numa][0] === 3 && shuffledDeck[numa][1] === 3) {
+                        threeLocx = i;
+                        threeLocy = j;
+                        emptyLoc.x = threeLocx
+                        emptyLoc.y = threeLocy;
+                    }
                     console.log(i, j, boardParts[i][j].x, boardParts[i][j].y);
                     numa++;
                 };
             };
-            emptyLoc.x = boardParts[tileCount - 1][tileCount - 1].x;
-            emptyLoc.y = boardParts[tileCount - 1][tileCount - 1].y;
             solved = false;
         };
 
         function makeCordArray(tileCount) {
-            var randArray = new Array();
-            for (var i = 0; i < tileCount; ++i) {
-                for (var j = 0; j < tileCount; ++j) {
+            let randArray = new Array();
+            for (let i = 0; i < tileCount; ++i) {
+                for (let j = 0; j < tileCount; ++j) {
                     randArray.push([i, j]);
                 };
             };
