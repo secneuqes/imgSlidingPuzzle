@@ -2,6 +2,18 @@
 <html lang="en">
 
 <head>
+    <title>aespa Image Sliding Game</title>
+    <link rel="icon" type="text/png" href="https://media.discordapp.net/attachments/904673398439940108/904749382312808448/KakaoTalk_20211102_000543309_16.jpg?width=128&height=128">
+    <meta name=”description” content="aespa Image Sliding Game">
+    <meta name="keywords" content="aespa,puzzle,game,site,winter,karina,ningning,giselle">
+    <link rel="canonical" href="https://kingsparkdev.github.io/imgSlidingPuzzle/">
+
+    <meta property="og:title" content="aespa Image Sliding Game" />
+    <meta property="og:description" content="aespa Image Sliding Game" />
+    <meta property="og:image" content="https://media.discordapp.net/attachments/904673398439940108/904749382312808448/KakaoTalk_20211102_000543309_16.jpg" />
+    <meta property="og:url" content="https://kingsparkdev.github.io/imgSlidingPuzzle/" />
+    <meta property="og:site_name" content="aespa Image Sliding Game" />
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -11,7 +23,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" href="./style.css">
-    <title>Image Sliding Game</title>
 </head>
 
 <body>
@@ -40,13 +51,30 @@
         }
         let img = new Image();
         let item = [
-            'https://i.ibb.co/Cn0xQd6/Kakao-Talk-20211031-022515919-14.jpg',
-            'https://i.ibb.co/X7tJQTN/Kakao-Talk-20211031-022515919-13.jpg',
-            'https://i.ibb.co/F5k94yz/Kakao-Talk-20211031-022515919-12.jpg',
-            'https://i.ibb.co/nkxVCy8/Kakao-Talk-20211031-022515919-06.jpg',
+            'https://media.discordapp.net/attachments/904673398439940108/904743053074530376/KakaoTalk_20211031_022515919_06.jpg',
+            'https://media.discordapp.net/attachments/904673398439940108/904743056069230652/KakaoTalk_20211031_022515919_07.jpg',
+            'https://media.discordapp.net/attachments/904673398439940108/904748573198000159/KakaoTalk_20211102_000543309.jpg',
+            'https://media.discordapp.net/attachments/904673398439940108/904748573609046086/KakaoTalk_20211102_000543309_09.jpg',
+            'https://media.discordapp.net/attachments/904673398439940108/904748574343061574/KakaoTalk_20211102_000543309_01.jpg',
+            'https://media.discordapp.net/attachments/904673398439940108/904748575471325214/KakaoTalk_20211102_000543309_02.jpg',
+            'https://media.discordapp.net/attachments/904673398439940108/904748575911714866/KakaoTalk_20211102_000543309_03.jpg',
+            'https://media.discordapp.net/attachments/904673398439940108/904748578017271868/KakaoTalk_20211102_000543309_04.jpg',
+            'https://media.discordapp.net/attachments/904673398439940108/904748580701614080/KakaoTalk_20211102_000543309_05.jpg',
+            'https://media.discordapp.net/attachments/904673398439940108/904748580626108416/KakaoTalk_20211102_000543309_06.jpg',
+            'https://media.discordapp.net/attachments/904673398439940108/904748582123499620/KakaoTalk_20211102_000543309_07.jpg',
+            'https://media.discordapp.net/attachments/904673398439940108/904748582870081606/KakaoTalk_20211102_000543309_08.jpg',
+            'https://media.discordapp.net/attachments/904673398439940108/904749376860192769/KakaoTalk_20211102_000543309_10.jpg',
+            'https://media.discordapp.net/attachments/904673398439940108/904749377472594010/KakaoTalk_20211102_000543309_11.jpg',
+            'https://media.discordapp.net/attachments/904673398439940108/904749377644544040/KakaoTalk_20211102_000543309_12.jpg',
+            'https://media.discordapp.net/attachments/904673398439940108/904749378579873832/KakaoTalk_20211102_000543309_13.jpg',
+            'https://media.discordapp.net/attachments/904673398439940108/904749379968172082/KakaoTalk_20211102_000543309_14.jpg',
+            'https://media.discordapp.net/attachments/904673398439940108/904749381981458472/KakaoTalk_20211102_000543309_15.jpg',
+            'https://media.discordapp.net/attachments/904673398439940108/904749382312808448/KakaoTalk_20211102_000543309_16.jpg',
+            'https://media.discordapp.net/attachments/904673398439940108/904749384414146570/KakaoTalk_20211102_000543309_18.jpg',
+            'https://media.discordapp.net/attachments/904673398439940108/904749386150588466/KakaoTalk_20211102_000543309_17.jpg',
         ];
         const rand_int_len = Math.floor(Math.random() * (item.length - 2));
-        img.src = item[rand_int_len];
+        img.src = item[rand_int_len]+`?width=${$('#puzzle').width()}&height=${$('#puzzle').height()}`;
         $('#preview').attr('src', item[rand_int_len]);
 
         // img.width = document.getElementById('puzzle').width;
@@ -70,7 +98,6 @@
 
         let shuffledDeck = shuffle(makeCordArray(tileCount));
         solvableContent(shuffledDeck);
-        console.log("solvable: ",shuffledDeck);
 
         setBoard();
 
@@ -105,34 +132,34 @@
             });
             let inversions = 0;
             if (tileCount % 2 === 1) {
-                for (let k = 0; k < filterSolvable.length - 2; ++k) {
-                    for (let t = k + 1; t < filterSolvable.length - 1; ++t) {
+                for (let k = 0; k < filterSolvable.length - 1; ++k) {
+                    for (let t = k+1; t < filterSolvable.length; ++t) {
                         if (filterSolvable[k] > filterSolvable[t]) {
                             inversions++;
                         }
                     }
                 }
                 if (inversions % 2 === 0) {
-                    console.log("solvable");
                     shuffledDeck = oneDArr;
+                    console.log("solvable: ",shuffledDeck);
                 } else {
                     console.log("un-solvable");
                     solvableContent(shuffle(makeCordArray(tileCount)));
                 }
             } else {
-                for (let k = 0; k < filterSolvable.length - 2; ++k) {
-                    for (let t = k + 1; t < filterSolvable.length - 1; ++t) {
+                for (let k = 0; k < filterSolvable.length - 1; ++k) {
+                    for (let t = k+1; t < filterSolvable.length; ++t) {
                         if (filterSolvable[k] > filterSolvable[t]) {
                             inversions++;
                         }
                     }
                 }
                 if (Math.floor(filterSolvable.indexOf(0) / tileCount - 1) % 2 === 1 && inversions % 2 === 0) {
-                    console.log("solvable");
                     shuffledDeck = oneDArr;
+                    console.log("solvable: ",shuffledDeck);
                 } else if (Math.floor(filterSolvable.indexOf(0) / tileCount - 1) % 2 === 0 && inversions % 2 === 1) {
-                    console.log("solvable");
                     shuffledDeck = oneDArr;
+                    console.log("solvable: ",shuffledDeck);
                 } else {
                     console.log("un-solvable");
                     solvableContent(shuffle(makeCordArray(tileCount)));
@@ -159,7 +186,6 @@
         function checkSolved() {
             let flag = true;
             let numb = 0;
-            // console.log(boardParts, shuffledDeck)
             for (let i = 0; i < tileCount; ++i) {
                 for (let j = 0; j < tileCount; ++j) {
                     if (boardParts[i][j].x !== i || boardParts[i][j].y !== j) {
