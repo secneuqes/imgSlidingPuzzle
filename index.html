@@ -145,7 +145,7 @@
             if (tileCount % 2 === 1) {
                 for (let k = 0; k < filterSolvable.length - 1; ++k) {
                     for (let t = k+1; t < filterSolvable.length; ++t) {
-                        if (filterSolvable[k] > filterSolvable[t]) {
+                        if (filterSolvable[k] > filterSolvable[t] && filterSolvable[k] !== 15 && filterSolvable[t] !== 15) {
                             inversions++;
                         }
                     }
@@ -160,7 +160,7 @@
             } else {
                 for (let k = 0; k < filterSolvable.length - 1; ++k) {
                     for (let t = k+1; t < filterSolvable.length; ++t) {
-                        if (filterSolvable[k] > filterSolvable[t]) {
+                        if (filterSolvable[k] > filterSolvable[t] && filterSolvable[k] !== 15 && filterSolvable[t] !== 15) {
                             inversions++;
                         }
                     }
