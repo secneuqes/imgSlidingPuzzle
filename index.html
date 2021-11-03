@@ -132,11 +132,11 @@
             });
             let subPassArr = [];
             let numGrid = 0;
-            for(let p=0;p<tileCount*tileCount;p++) {
+            for(let p=0;p<Math.pow(tileCount,2);p++) {
                 subPassArr.push(filterSolvable[numGrid]);
                 numGrid += parseInt(tileCount);
-                if(tileCount*tileCount-1<numGrid) {
-                    numGrid -= tileCount*tileCount-1
+                if(Math.pow(tileCount,2)-1<numGrid) {
+                    numGrid -= Math.pow(tileCount,2)-1
                 }
             }
             filterSolvable = subPassArr;
@@ -145,7 +145,7 @@
             if (tileCount % 2 === 1) {
                 for (let k = 0; k < filterSolvable.length - 1; ++k) {
                     for (let t = k+1; t < filterSolvable.length; ++t) {
-                        if (filterSolvable[k] > filterSolvable[t] && filterSolvable[k] !== 15 && filterSolvable[t] !== 15) {
+                        if (filterSolvable[k] > filterSolvable[t] && filterSolvable[k] !== Math.pow(tileCount,2)-1 && filterSolvable[t] !== Math.pow(tileCount,2)-1) {
                             inversions++;
                         }
                     }
@@ -160,13 +160,13 @@
             } else {
                 for (let k = 0; k < filterSolvable.length - 1; ++k) {
                     for (let t = k+1; t < filterSolvable.length; ++t) {
-                        if (filterSolvable[k] > filterSolvable[t] && filterSolvable[k] !== 15 && filterSolvable[t] !== 15) {
+                        if (filterSolvable[k] > filterSolvable[t] && filterSolvable[k] !== Math.pow(tileCount,2)-1 && filterSolvable[t] !== Math.pow(tileCount,2)-1) {
                             inversions++;
                         }
                     }
                 }
-                // console.log("hi ",parseInt((tileCount*tileCount - filterSolvable.indexOf(tileCount*tileCount-1) +3)/tileCount));
-                let byUnderNo = parseInt((tileCount*tileCount - filterSolvable.indexOf(tileCount*tileCount-1) +3)/tileCount);
+                // console.log("hi ",parseInt((Math.pow(tileCount,2) - filterSolvable.indexOf(Math.pow(tileCount,2)-1) +3)/tileCount));
+                let byUnderNo = parseInt((Math.pow(tileCount,2) - filterSolvable.indexOf(Math.pow(tileCount,2)-1) +3)/tileCount);
                 console.log(byUnderNo)
                 if (byUnderNo % 2 === 1 && inversions % 2 === 0) {
                     shuffledDeck = oneDArr;
