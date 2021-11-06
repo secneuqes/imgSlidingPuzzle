@@ -30,7 +30,7 @@
     <div id="slider">
         <form>
             <label>Easy</label>
-            <input type="range" id="scale" value="5" min="3" max="9" step="1">
+            <input type="range" id="scale" value="5" min="2" max="9" step="1">
             <label>Hard</label>
             <label> [ Level</label>
             <label id="levelDis">5 ]</label>
@@ -99,7 +99,10 @@
         let solved = false;
 
         let shuffledDeck = solvableContent(shuffle(makeCordArray(tileCount)));
-        // console.log(shuffledDeck);
+        while (shuffledDeck === undefined) {
+            console.log(shuffledDeck);
+            shuffledDeck = solvableContent(shuffle(makeCordArray(tileCount)));
+        }
 
         setBoard();
 
@@ -108,6 +111,10 @@
             tileCount = this.value;
             tileSize = boardSize / tileCount;
             shuffledDeck = solvableContent(shuffle(makeCordArray(tileCount)));
+                while (shuffledDeck === undefined) {
+                console.log(shuffledDeck);
+                shuffledDeck = solvableContent(shuffle(makeCordArray(tileCount)));
+            }
             setBoard();
             drawTiles();
         };
@@ -137,9 +144,6 @@
             });
             // console.log("returnArr",returnArr);
             // console.log("filterSolvable",filterSolvable);
-            if (JSON.stringify(returnArr[filterSolvable.indexOf(Math.pow(tileCount,2)-1)]) !== JSON.stringify([4,4])){
-                return solvableContent(shuffle(makeCordArray(tileCount)));
-            }
             let inversions = 0;
             if (tileCount % 2 === 1) {
                 for (let k = 0; k < filterSolvable.length - 1; ++k) {
@@ -154,7 +158,7 @@
                     return returnArr;
                 } else {
                     console.log("un-solvable");
-                    return solvableContent(shuffle(makeCordArray(tileCount)));
+                    return undefined;
                 }
             } else {
                 for (let k = 0; k < filterSolvable.length - 1; ++k) {
@@ -174,7 +178,7 @@
                     return returnArr;
                 } else {
                     console.log("un-solvable");
-                    return solvableContent(shuffle(makeCordArray(tileCount)));
+                    return undefined;
                 }
             }
         }
@@ -211,13 +215,13 @@
 
         function drawTiles() {
             context.clearRect(0, 0, boardSize, boardSize);
-            for (let i = 0; i < tileCount; i++) {
-                for (let j = 0; j < tileCount; j++) {
+            for (let j = 0; j < tileCount; j++) {
+                for  (let i = 0; i < tileCount; i++){
                     let x = boardParts[i][j].x;
                     let y = boardParts[i][j].y;
                     if (i !== emptyLoc.x || j !== emptyLoc.y || solved === true) {
                         context.drawImage(img, x * tileSize, y * tileSize, tileSize, tileSize,
-                            j * tileSize, i * tileSize, tileSize, tileSize);
+                            i * tileSize, j * tileSize, tileSize, tileSize);
                     }
                 }
             }
@@ -235,10 +239,8 @@
                     boardParts[i][j].x = shuffledDeck[numa][0];
                     boardParts[i][j].y = shuffledDeck[numa][1];
                     if (shuffledDeck[numa][0] === tileCount - 1 && shuffledDeck[numa][1] === tileCount - 1) {
-                        threeLocx = i;
-                        threeLocy = j;
-                        emptyLoc.x = threeLocx
-                        emptyLoc.y = threeLocy;
+                        emptyLoc.x = i;
+                        emptyLoc.y = j;
                     }
                     numa++;
                 }
