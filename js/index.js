@@ -1,41 +1,20 @@
+let maxW=0;
+let maxH=0;
+
 let context = document.getElementById("puzzle").getContext("2d");
+let img=new Image();
+
 if (window.innerWidth <= 600) {
     $('#puzzle').attr('width', `${window.innerWidth * 0.8}px`);
     $('#puzzle').attr('height', `${window.innerWidth * 0.8}px`);
+    maxW = window.innerWidth * 0.8;
+    maxH = window.innerHeight * 0.8;
 } else {
     $('#puzzle').attr('width', '480px');
     $('#puzzle').attr('height', '480px');
+    maxW = 480;
+    maxH = 480;
 }
-let img = new Image();
-let item = [
-    'https://media.discordapp.net/attachments/904673398439940108/904743053074530376/KakaoTalk_20211031_022515919_06.jpg',
-    'https://media.discordapp.net/attachments/904673398439940108/904743056069230652/KakaoTalk_20211031_022515919_07.jpg',
-    'https://media.discordapp.net/attachments/904673398439940108/904748573198000159/KakaoTalk_20211102_000543309.jpg',
-    'https://media.discordapp.net/attachments/904673398439940108/904748573609046086/KakaoTalk_20211102_000543309_09.jpg',
-    'https://media.discordapp.net/attachments/904673398439940108/904748574343061574/KakaoTalk_20211102_000543309_01.jpg',
-    'https://media.discordapp.net/attachments/904673398439940108/904748575471325214/KakaoTalk_20211102_000543309_02.jpg',
-    'https://media.discordapp.net/attachments/904673398439940108/904748575911714866/KakaoTalk_20211102_000543309_03.jpg',
-    'https://media.discordapp.net/attachments/904673398439940108/904748578017271868/KakaoTalk_20211102_000543309_04.jpg',
-    'https://media.discordapp.net/attachments/904673398439940108/904748580701614080/KakaoTalk_20211102_000543309_05.jpg',
-    'https://media.discordapp.net/attachments/904673398439940108/904748580626108416/KakaoTalk_20211102_000543309_06.jpg',
-    'https://media.discordapp.net/attachments/904673398439940108/904748582123499620/KakaoTalk_20211102_000543309_07.jpg',
-    'https://media.discordapp.net/attachments/904673398439940108/904748582870081606/KakaoTalk_20211102_000543309_08.jpg',
-    'https://media.discordapp.net/attachments/904673398439940108/904749376860192769/KakaoTalk_20211102_000543309_10.jpg',
-    'https://media.discordapp.net/attachments/904673398439940108/904749377472594010/KakaoTalk_20211102_000543309_11.jpg',
-    'https://media.discordapp.net/attachments/904673398439940108/904749377644544040/KakaoTalk_20211102_000543309_12.jpg',
-    'https://media.discordapp.net/attachments/904673398439940108/904749378579873832/KakaoTalk_20211102_000543309_13.jpg',
-    'https://media.discordapp.net/attachments/904673398439940108/904749379968172082/KakaoTalk_20211102_000543309_14.jpg',
-    'https://media.discordapp.net/attachments/904673398439940108/904749381981458472/KakaoTalk_20211102_000543309_15.jpg',
-    'https://media.discordapp.net/attachments/904673398439940108/904749382312808448/KakaoTalk_20211102_000543309_16.jpg',
-    'https://media.discordapp.net/attachments/904673398439940108/904749384414146570/KakaoTalk_20211102_000543309_18.jpg',
-    'https://media.discordapp.net/attachments/904673398439940108/904749386150588466/KakaoTalk_20211102_000543309_17.jpg',
-];
-const rand_int_len = Math.floor(Math.random() * (item.length - 2));
-img.src = item[rand_int_len] + `?width=${$('#puzzle').width()}&height=${$('#puzzle').height()}`;
-$('#preview').attr('src', item[rand_int_len]);
-
-// img.width = document.getElementById('puzzle').width;
-img.addEventListener('load', drawTiles, false);
 
 let boardSize = document.getElementById('puzzle').width;
 let tileCount = document.getElementById('scale').value;
@@ -59,6 +38,36 @@ while (shuffledDeck === undefined) {
 }
 
 setBoard();
+
+// ==========================================================
+
+let input = document.getElementById('formFile');
+input.addEventListener('change', handleFiles);
+
+function handleFiles(e) {
+    $('.card-body').hide();
+    let thumb = new Image;
+    thumb.src = URL.createObjectURL(e.target.files[0]);
+    thumb.onload = function() {
+        let canvas=document.createElement("canvas");
+        let ctx=canvas.getContext("2d");
+        let iw=thumb.width;
+        let ih=thumb.height;
+        let scale=Math.min((maxW/iw),(maxH/ih));
+        let iwScaled=iw*scale;
+        let ihScaled=ih*scale;
+        canvas.width=iwScaled;
+        canvas.height=ihScaled;
+        ctx.drawImage(thumb,0,0,iwScaled,ihScaled);
+        img.src=canvas.toDataURL();
+
+        img.addEventListener('load', drawTiles, false);
+        $('#preview').attr('src', canvas.toDataURL());
+        $('#preview').attr('width', `${window.innerWidth * 0.8}px`);
+
+        $('.main-puzzle').show();
+    }
+}
 
 document.getElementById('scale').onchange = function () {
     $('#levelDis').text(this.value + " ]")

@@ -1,7 +1,31 @@
+body { overflow: hidden; width: 100vw; height: 100vh;}
+
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 55px;
+    background-color: aquamarine;
+}
+
+.card-body {
+    width: 100vw;
+    margin: 0 auto;
+}
+
+.file-input {
+    padding: 0;
+}
+
+.form-control {
+    width: 480px;
+}
+
 #main {
     display: flex;
     justify-content: center;
-    align-items: center
+    align-items: center;
 }
 
 canvas {
@@ -17,9 +41,13 @@ canvas {
     overflow: hidden;
 }
 
-@media ( max-width: 600px ) {
+@media(max-width: 600px) {
     #preview {
         width: 80vw;
         height: 80vw;
     }
+    .form-control {
+        width: 80vw;
+    }
 }
+
