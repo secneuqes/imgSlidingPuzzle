@@ -53,6 +53,11 @@ function handleFiles(e) {
         let ctx=canvas.getContext("2d");
         let iw=thumb.width;
         let ih=thumb.height;
+        if (ih >= iw) {
+            $('#preview').css('object-fit','cover');
+        } else {
+            $('#preview').css('object-fit','scale-down');
+        }
         let scale=Math.min((maxW/iw),(maxH/ih));
         let iwScaled=iw*scale;
         let ihScaled=ih*scale;
