@@ -92,13 +92,10 @@ document.getElementById('puzzle').onclick = function () {
 function solvableContent(oneDArr) {
     let filterSolvable = [];
     let returnArr = [];
-    let numGrid = 0;
     oneDArr.forEach(elem => {
         returnArr.push(elem);
         filterSolvable.push(elem[0] * tileCount + elem[1]);
     });
-    // console.log("returnArr",returnArr);
-    // console.log("filterSolvable",filterSolvable);
     let inversions = 0;
     if (tileCount % 2 === 1) {
         for (let k = 0; k < filterSolvable.length - 1; ++k) {
@@ -156,13 +153,11 @@ function slideTile(toLoc, fromLoc) {
 
 function checkSolved() {
     let flag = true;
-    let numb = 0;
     for (let i = 0; i < tileCount; ++i) {
         for (let j = 0; j < tileCount; ++j) {
             if (boardParts[i][j].x !== i || boardParts[i][j].y !== j) {
                 flag = false;
             };
-            numb++;
         }
     }
     solved = flag;
@@ -184,8 +179,6 @@ function drawTiles() {
 
 function setBoard() {
     let numa = 0;
-    let threeLocx = 0;
-    let threeLocy = 0;
     boardParts = new Array(tileCount);
     for (let i = 0; i < tileCount; i++) {
         boardParts[i] = new Array(tileCount);
