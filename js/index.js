@@ -222,3 +222,6 @@ function shuffle(array) {
     }
     return array;
 }
+
+// image scaling | https://stackoverflow.com/questions/36112458/scaling-image-from-inputtype-file
+// on image | https://stackoverflow.com/questions/3814231/loading-an-image-to-a-img-from-input-file
