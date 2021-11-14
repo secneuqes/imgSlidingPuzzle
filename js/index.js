@@ -55,7 +55,6 @@ let solved = false;
 
 let shuffledDeck = solvableContent(shuffle(makeCordArray(tileCount)));
 while (shuffledDeck === undefined) {
-    console.log(shuffledDeck);
     shuffledDeck = solvableContent(shuffle(makeCordArray(tileCount)));
 }
 
@@ -67,7 +66,6 @@ document.getElementById('scale').onchange = function () {
     tileSize = boardSize / tileCount;
     shuffledDeck = solvableContent(shuffle(makeCordArray(tileCount)));
     while (shuffledDeck === undefined) {
-        console.log(shuffledDeck);
         shuffledDeck = solvableContent(shuffle(makeCordArray(tileCount)));
     }
     setBoard();
@@ -121,7 +119,6 @@ function solvableContent(oneDArr) {
             }
         }
         let byUnderNo = parseInt((Math.pow(tileCount, 2) - filterSolvable.indexOf(Math.pow(tileCount, 2) - 1) + 3) / tileCount);
-        console.log(byUnderNo)
         if (byUnderNo % 2 === 1 && inversions % 2 === 0) {
             console.log("solvable");
             return returnArr;
