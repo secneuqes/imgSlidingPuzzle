@@ -69,6 +69,7 @@ function handleFiles(e) {
         img.src=canvas.toDataURL();
 
         img.addEventListener('load', drawTiles, false);
+        $('body').css('height','100%');
         $('#preview').attr('src', canvas.toDataURL());
         $('#preview').attr('width', `${window.innerWidth * 0.8}px`);
 
