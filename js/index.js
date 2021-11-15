@@ -1,8 +1,8 @@
-let maxW=0;
-let maxH=0;
+let maxW = 0;
+let maxH = 0;
 
 let context = document.getElementById("puzzle").getContext("2d");
-let img=new Image();
+let img = new Image();
 
 if (window.innerWidth <= 600) {
     $('#puzzle').attr('width', `${window.innerWidth * 0.8}px`);
@@ -47,28 +47,28 @@ function handleFiles(e) {
     $('.card').hide();
     let thumb = new Image;
     thumb.src = URL.createObjectURL(e.target.files[0]);
-    thumb.onload = function() {
-        let canvas=document.createElement("canvas");
-        let ctx=canvas.getContext("2d");
-        let iw=thumb.width;
-        let ih=thumb.height;
+    thumb.onload = function () {
+        let canvas = document.createElement("canvas");
+        let ctx = canvas.getContext("2d");
+        let iw = thumb.width;
+        let ih = thumb.height;
         if (ih >= iw) {
-            $('#preview').css('object-fit','cover');
+            $('#preview').css('object-fit', 'cover');
         } else {
             alert("가로가 세로보다 긴 사진입니다.\n세로가 더 긴 사진을 선택해주세요.");
             location.reload();
             return false;
         }
-        let scale=(maxW/iw);
-        let iwScaled=iw*scale;
-        let ihScaled=ih*scale;
-        canvas.width=iwScaled;
-        canvas.height=ihScaled;
-        ctx.drawImage(thumb,0,0,iwScaled,ihScaled);
-        img.src=canvas.toDataURL();
+        let scale = (maxW / iw);
+        let iwScaled = iw * scale;
+        let ihScaled = ih * scale;
+        canvas.width = iwScaled;
+        canvas.height = ihScaled;
+        ctx.drawImage(thumb, 0, 0, iwScaled, ihScaled);
+        img.src = canvas.toDataURL();
 
         img.addEventListener('load', drawTiles, false);
-        $('body').css('height','100%');
+        $('body').css('height', '100%');
         $('#preview').attr('src', canvas.toDataURL());
         $('#preview').attr('width', `${window.innerWidth * 0.8}px`);
 
