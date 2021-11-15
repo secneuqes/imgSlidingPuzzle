@@ -1,25 +1,38 @@
-body { overflow: hidden; width: 100vw; height: 100vh;}
+body {
+    overflow: hidden; width: 100vw; height: 100vh;
+    box-sizing: border-box;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+body::before {
+    z-index: -1;
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background-color: #00DBDE;
+    background-image: linear-gradient(138deg, #00DBDE 0%, #FC00FF 100%);
+}
 
 .header {
+    color: white;
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100vw;
     height: 55px;
-    background-color: aquamarine;
+    /* background-image: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%); */
 }
 
-.card-body {
-    width: 100vw;
+.card {
+    width: 90vw;
     margin: 0 auto;
-}
-
-.file-input {
-    padding: 0;
-}
-
-.form-control {
-    width: 480px;
+    border-radius: 5px;
+    background-color: rgba(255,255,255,1);
 }
 
 #main {

@@ -45,7 +45,7 @@ let input = document.getElementById('formFile');
 input.addEventListener('change', handleFiles);
 
 function handleFiles(e) {
-    $('.card-body').hide();
+    $('.card').hide();
     let thumb = new Image;
     thumb.src = URL.createObjectURL(e.target.files[0]);
     thumb.onload = function() {
@@ -56,7 +56,9 @@ function handleFiles(e) {
         if (ih >= iw) {
             $('#preview').css('object-fit','cover');
         } else {
-            $('#preview').css('object-fit','scale-down');
+            alert("가로가 세로보다 긴 사진입니다.\n세로가 더 긴 사진을 선택해주세요.");
+            location.reload();
+            return false;
         }
         let scale=Math.min((maxW/iw),(maxH/ih));
         let iwScaled=iw*scale;
@@ -97,7 +99,7 @@ document.getElementById('puzzle').onclick = function () {
         drawTiles();
     };
     if (solved) {
-        setTimeout(function () { alert("You solved it!"); }, 500);
+        setTimeout(function () { alert("성공!"); }, 500);
     };
 };
 
