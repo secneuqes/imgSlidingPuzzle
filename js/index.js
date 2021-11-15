@@ -15,7 +15,6 @@ if (window.innerWidth <= 600) {
     maxW = 480;
     maxH = 480;
 }
-
 let boardSize = document.getElementById('puzzle').width;
 let tileCount = document.getElementById('scale').value;
 let tileSize = boardSize / tileCount;
@@ -60,7 +59,7 @@ function handleFiles(e) {
             location.reload();
             return false;
         }
-        let scale=Math.min((maxW/iw),(maxH/ih));
+        let scale=(maxW/iw);
         let iwScaled=iw*scale;
         let ihScaled=ih*scale;
         canvas.width=iwScaled;
