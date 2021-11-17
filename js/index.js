@@ -3,6 +3,7 @@ let maxH = 0;
 
 let context = document.getElementById("puzzle").getContext("2d");
 let img = new Image();
+let croppr;
 
 if (window.innerWidth <= 600) {
     $('#puzzle').attr('width', `${window.innerWidth * 0.8}px`);
@@ -45,39 +46,48 @@ input.addEventListener('change', handleFiles);
 
 function handleFiles(e) {
     $('.card').hide();
-    let thumb = new Image;
-    thumb.src = URL.createObjectURL(e.target.files[0]);
-    thumb.onload = function () {
-        let canvas = document.createElement("canvas");
-        let ctx = canvas.getContext("2d");
-        let iw = thumb.width;
-        let ih = thumb.height;
-        if (ih >= iw) {
-            $('#preview').css('object-fit', 'cover');
-        } else {
-            alert("가로가 세로보다 긴 사진입니다.\n세로가 더 긴 사진을 선택해주세요.");
-            location.reload();
-            return false;
-        }
-        let scale = (maxW / iw);
-        let iwScaled = iw * scale;
-        let ihScaled = ih * scale;
-        canvas.width = iwScaled;
-        canvas.height = ihScaled;
-        ctx.drawImage(thumb, 0, 0, iwScaled, ihScaled);
-        img.src = canvas.toDataURL();
+    $('.modal').show();
+    let modal_img = document.getElementById('cropper');
+    modal_img.src = URL.createObjectURL(e.target.files[0]);
+    console.log(modal_img.clientWidth);
+    croppr = new Croppr('#cropper', {
+        aspectRatio: 1,
+        minSize: [100, 100, '%'],
+        onInitialize: (instance) => { console.log(instance); },
+    });
+}
 
-        img.addEventListener('load', drawTiles, false);
-        $('body').css('height', '100%');
-        $('#preview').attr('src', canvas.toDataURL());
-        $('#preview').attr('width', `${window.innerWidth * 0.8}px`);
+function submitImg() {
+    const cropRect = croppr.getValue();
+    const canvas = document.createElement("canvas");
+    const context = canvas.getContext("2d");
+    canvas.width = cropRect.width;
+    canvas.height = cropRect.height;
+    context.drawImage(
+        croppr.imageEl,
+        cropRect.x,
+        cropRect.y,
+        cropRect.width,
+        cropRect.height,
+        0,
+        0,
+        canvas.width,
+        canvas.height,
+    );
+    img.src = canvas.toDataURL();
+    img.addEventListener('load', drawTiles, false);
 
-        $('.main-puzzle').show();
-    }
+    $('#preview').attr('src', canvas.toDataURL());
+    $('#preview').attr('width', `${window.innerWidth * 0.8}px`);
+    $('#preview').attr('height', `${window.innerWidth * 0.8}px`);
+
+
+    $('.modal').hide();
+    $('.main-puzzle').show();
 }
 
 document.getElementById('scale').onchange = function () {
-    $('#levelDis').text(this.value + " ]")
+    $('#levelDis').text(this.value + " ]");
     tileCount = this.value;
     tileSize = boardSize / tileCount;
     shuffledDeck = solvableContent(shuffle(makeCordArray(tileCount)));
