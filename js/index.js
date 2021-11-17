@@ -49,18 +49,17 @@ function handleFiles(e) {
     $('.modal').show();
     let modal_img = document.getElementById('cropper');
     modal_img.src = URL.createObjectURL(e.target.files[0]);
-    console.log(modal_img.clientWidth);
     croppr = new Croppr('#cropper', {
         aspectRatio: 1,
         minSize: [100, 100, '%'],
-        onInitialize: (instance) => { console.log(instance); },
     });
 }
 
 function submitImg() {
-    const cropRect = croppr.getValue();
-    const canvas = document.createElement("canvas");
-    const context = canvas.getContext("2d");
+    let thumb = new Image;
+    let cropRect = croppr.getValue();
+    let canvas = document.createElement("canvas");
+    let context = canvas.getContext("2d");
     canvas.width = cropRect.width;
     canvas.height = cropRect.height;
     context.drawImage(
@@ -74,16 +73,30 @@ function submitImg() {
         canvas.width,
         canvas.height,
     );
-    img.src = canvas.toDataURL();
-    img.addEventListener('load', drawTiles, false);
+    thumb.src = canvas.toDataURL();
+    // =================================
+    thumb.onload = function () {
+        let canvasF = document.createElement("canvas");
+        let ctx = canvasF.getContext("2d");
+        let iw = thumb.width;
+        let ih = thumb.height;
+        let scale = (maxW / iw);
+        let iwScaled = iw * scale;
+        let ihScaled = ih * scale;
+        canvasF.width = iwScaled;
+        canvasF.height = ihScaled;
+        ctx.drawImage(thumb, 0, 0, iwScaled, ihScaled);
+        img.src = canvasF.toDataURL();
+        img.addEventListener('load', drawTiles, false);
 
-    $('#preview').attr('src', canvas.toDataURL());
-    $('#preview').attr('width', `${window.innerWidth * 0.8}px`);
-    $('#preview').attr('height', `${window.innerWidth * 0.8}px`);
+        $('#preview').attr('src', canvas.toDataURL());
+        $('#preview').attr('width', `${window.innerWidth * 0.8}px`);
+        $('#preview').attr('height', `${window.innerWidth * 0.8}px`);
 
-
-    $('.modal').hide();
-    $('.main-puzzle').show();
+        $('.modal').hide();
+        $('.main-puzzle').show();
+    }
+    
 }
 
 document.getElementById('scale').onchange = function () {
