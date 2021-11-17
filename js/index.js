@@ -4,7 +4,6 @@ $(document).ready(function () {
     });
 });
 
-
 let maxW = 0;
 let maxH = 0;
 
@@ -90,17 +89,9 @@ function submitImg() {
     thumb.src = canvas.toDataURL();
     // =================================
     thumb.onload = function () {
-        let canvasF = document.createElement("canvas");
-        let ctx = canvasF.getContext("2d");
         let iw = thumb.width;
-        let ih = thumb.height;
         let scale = (maxW / iw);
-        let iwScaled = iw * scale;
-        let ihScaled = ih * scale;
-        canvasF.width = iwScaled;
-        canvasF.height = ihScaled;
-        ctx.drawImage(thumb, 0, 0, iwScaled, ihScaled);
-        img.src = canvasF.toDataURL();
+        img.src = downScaleImage(thumb, scale).toDataURL();
         img.addEventListener('load', drawTiles, false);
 
         $('#preview').attr('src', canvas.toDataURL());
@@ -269,5 +260,115 @@ function shuffle(array) {
     return array;
 }
 
+function downScaleImage(img, scale) {
+    var imgCV = document.createElement('canvas');
+    imgCV.width = img.width;
+    imgCV.height = img.height;
+    var imgCtx = imgCV.getContext('2d');
+    imgCtx.drawImage(img, 0, 0);
+    return downScaleCanvas(imgCV, scale);
+}
+
+function downScaleCanvas(cv, scale) {
+    if (!(scale < 1) || !(scale > 0)) throw ('scale must be a positive number <1 ');
+    var sqScale = scale * scale;
+    var sw = cv.width; 
+    var sh = cv.height; 
+    var tw = Math.floor(sw * scale); 
+    var th = Math.floor(sh * scale);
+    var sx = 0, sy = 0, sIndex = 0; 
+    var tx = 0, ty = 0, yIndex = 0, tIndex = 0;
+    var tX = 0, tY = 0;
+    var w = 0, nw = 0, wx = 0, nwx = 0, wy = 0, nwy = 0;
+    var crossX = false;
+    var crossY = false;
+    var sBuffer = cv.getContext('2d').
+    getImageData(0, 0, sw, sh).data;
+    var tBuffer = new Float32Array(3 * tw * th);
+    var sR = 0, sG = 0,  sB = 0;
+
+    for (sy = 0; sy < sh; sy++) {
+        ty = sy * scale; 
+        tY = 0 | ty;
+        yIndex = 3 * tY * tw; 
+        crossY = (tY != (0 | ty + scale)); 
+        if (crossY) {
+            wy = (tY + 1 - ty);
+            nwy = (ty + scale - tY - 1);
+        }
+        for (sx = 0; sx < sw; sx++, sIndex += 4) {
+            tx = sx * scale;
+            tX = 0 |  tx;
+            tIndex = yIndex + tX * 3;
+            crossX = (tX != (0 | tx + scale));
+            if (crossX) {
+                wx = (tX + 1 - tx);
+                nwx = (tx + scale - tX - 1);
+            }
+            sR = sBuffer[sIndex    ];
+            sG = sBuffer[sIndex + 1];
+            sB = sBuffer[sIndex + 2];
+
+            if (!crossX && !crossY) {
+                tBuffer[tIndex    ] += sR * sqScale;
+                tBuffer[tIndex + 1] += sG * sqScale;
+                tBuffer[tIndex + 2] += sB * sqScale;
+            } else if (crossX && !crossY) {
+                w = wx * scale;
+                tBuffer[tIndex    ] += sR * w;
+                tBuffer[tIndex + 1] += sG * w;
+                tBuffer[tIndex + 2] += sB * w;
+                nw = nwx * scale
+                tBuffer[tIndex + 3] += sR * nw;
+                tBuffer[tIndex + 4] += sG * nw;
+                tBuffer[tIndex + 5] += sB * nw;
+            } else if (crossY && !crossX) {
+                w = wy * scale;
+                tBuffer[tIndex    ] += sR * w;
+                tBuffer[tIndex + 1] += sG * w;
+                tBuffer[tIndex + 2] += sB * w;
+                nw = nwy * scale
+                tBuffer[tIndex + 3 * tw    ] += sR * nw;
+                tBuffer[tIndex + 3 * tw + 1] += sG * nw;
+                tBuffer[tIndex + 3 * tw + 2] += sB * nw;
+            } else {
+                w = wx * wy;
+                tBuffer[tIndex    ] += sR * w;
+                tBuffer[tIndex + 1] += sG * w;
+                tBuffer[tIndex + 2] += sB * w;
+                nw = nwx * wy;
+                tBuffer[tIndex + 3] += sR * nw;
+                tBuffer[tIndex + 4] += sG * nw;
+                tBuffer[tIndex + 5] += sB * nw;
+                nw = wx * nwy;
+                tBuffer[tIndex + 3 * tw    ] += sR * nw;
+                tBuffer[tIndex + 3 * tw + 1] += sG * nw;
+                tBuffer[tIndex + 3 * tw + 2] += sB * nw;
+                nw = nwx * nwy;
+                tBuffer[tIndex + 3 * tw + 3] += sR * nw;
+                tBuffer[tIndex + 3 * tw + 4] += sG * nw;
+                tBuffer[tIndex + 3 * tw + 5] += sB * nw;
+            }
+        }
+    }
+
+    var resCV = document.createElement('canvas');
+    resCV.width = tw;
+    resCV.height = th;
+    var resCtx = resCV.getContext('2d');
+    var imgRes = resCtx.getImageData(0, 0, tw, th);
+    var tByteBuffer = imgRes.data;
+    var pxIndex = 0; //  
+    for (sIndex = 0, tIndex = 0; pxIndex < tw * th; sIndex += 3, tIndex += 4, pxIndex++) {
+        tByteBuffer[tIndex] = Math.ceil(tBuffer[sIndex]);
+        tByteBuffer[tIndex + 1] = Math.ceil(tBuffer[sIndex + 1]);
+        tByteBuffer[tIndex + 2] = Math.ceil(tBuffer[sIndex + 2]);
+        tByteBuffer[tIndex + 3] = 255;
+    }
+    resCtx.putImageData(imgRes, 0, 0);
+    return resCV;
+}
+
+// image scaling high-quality | https://stackoverflow.com/questions/18922880/html5-canvas-resize-downscale-image-high-quality
 // image scaling | https://stackoverflow.com/questions/36112458/scaling-image-from-inputtype-file
 // on image | https://stackoverflow.com/questions/3814231/loading-an-image-to-a-img-from-input-file

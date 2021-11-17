@@ -30,7 +30,6 @@ body {
 }
 
 .modal {
-    padding: 18px;
     left: 50%;
     transform: translateX(-50%);
     width: 480px;
