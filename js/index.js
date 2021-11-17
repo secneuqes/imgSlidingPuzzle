@@ -46,8 +46,7 @@ input.addEventListener('change', handleFiles);
 
 function handleFiles(e) {
     $('.card').hide();
-    $('.modal').show();
-    $('.submitImg').show();
+    $('.loader').show();
     let modal_img = document.getElementById('cropper');
     modal_img.src = URL.createObjectURL(e.target.files[0]);
     $('#cropper').on('load', function(){
@@ -57,10 +56,17 @@ function handleFiles(e) {
             aspectRatio: 1,
             minSize: [$(this).width(), $(this).width(), 'px'],
         });
-    });         
+    });    
+    $('.loader').hide();
+    $('.modal').show();
+    $('.submitImg').show();   
 }
 
 function submitImg() {
+    $('.submitImg').hide();
+    $('.modal').hide();
+    $('.loader').show();
+    window.scrollTo(0,document.body.scrollHeight);
     let thumb = new Image;
     let cropRect = croppr.getValue();
     let canvas = document.createElement("canvas");
@@ -98,8 +104,7 @@ function submitImg() {
         $('#preview').attr('width', `${window.innerWidth * 0.8}px`);
         $('#preview').attr('height', `${window.innerWidth * 0.8}px`);
 
-        $('.submitImg').hide();
-        $('.modal').hide();
+        $('.loader').hide();
         $('.main-puzzle').show();
     }
     

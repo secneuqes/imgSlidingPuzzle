@@ -38,6 +38,18 @@ body {
     position: relative;
 }
 
+.loader {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loading {
+
+}
+
 .modal img {
     max-width: 100%;
 }
