@@ -49,10 +49,12 @@ function handleFiles(e) {
     $('.modal').show();
     let modal_img = document.getElementById('cropper');
     modal_img.src = URL.createObjectURL(e.target.files[0]);
-    croppr = new Croppr('#cropper', {
-        aspectRatio: 1,
-        minSize: [100, 100, '%'],
-    });
+    $('#cropper').on('load', function(){
+        croppr = new Croppr('#cropper', {
+            aspectRatio: 1,
+            minSize: [$(this).width(), $(this).width(), 'px'],
+        });
+    });         
 }
 
 function submitImg() {
