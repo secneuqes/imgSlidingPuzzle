@@ -47,9 +47,12 @@ input.addEventListener('change', handleFiles);
 function handleFiles(e) {
     $('.card').hide();
     $('.modal').show();
+    $('.submitImg').show();
     let modal_img = document.getElementById('cropper');
     modal_img.src = URL.createObjectURL(e.target.files[0]);
     $('#cropper').on('load', function(){
+        $('.modal').css('max-height',`${$(this).height()}px`);
+        $('.modal').css('height',`${$(this).height()}px`);
         croppr = new Croppr('#cropper', {
             aspectRatio: 1,
             minSize: [$(this).width(), $(this).width(), 'px'],
@@ -95,6 +98,7 @@ function submitImg() {
         $('#preview').attr('width', `${window.innerWidth * 0.8}px`);
         $('#preview').attr('height', `${window.innerWidth * 0.8}px`);
 
+        $('.submitImg').hide();
         $('.modal').hide();
         $('.main-puzzle').show();
     }

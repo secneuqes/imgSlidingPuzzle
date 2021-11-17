@@ -34,7 +34,6 @@ body {
     left: 50%;
     transform: translateX(-50%);
     width: 480px;
-    max-height: 80vh;
     overflow: hidden;
     position: relative;
 }
@@ -44,6 +43,7 @@ body {
 }
 
 .submitImg {
+    z-index: 999;
     margin-top: 20px;
     width: 77px;
     left: 50%;
