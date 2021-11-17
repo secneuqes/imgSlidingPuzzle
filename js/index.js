@@ -1,3 +1,10 @@
+$(document).ready(function () {
+    $("*").dblclick(function (e) {
+        e.preventDefault();
+    });
+});
+
+
 let maxW = 0;
 let maxH = 0;
 
@@ -49,16 +56,16 @@ function handleFiles(e) {
     $('.card').hide();
     let modal_img = document.getElementById('cropper');
     modal_img.src = URL.createObjectURL(e.target.files[0]);
-    $('#cropper').on('load', function(){
-        $('.modal').css('max-height',`${$(this).height()}px`);
-        $('.modal').css('height',`${$(this).height()}px`);
+    $('#cropper').on('load', function () {
+        $('.modal').css('max-height', `${$(this).height()}px`);
+        $('.modal').css('height', `${$(this).height()}px`);
         croppr = new Croppr('#cropper', {
             aspectRatio: 1,
             minSize: [$(this).width(), $(this).width(), 'px'],
         });
-    });    
+    });
     $('.modal').show();
-    $('.submitImg').show();   
+    $('.submitImg').show();
 }
 
 function submitImg() {
@@ -105,7 +112,7 @@ function submitImg() {
 
         $('.main-puzzle').show();
     }
-    
+
 }
 
 document.getElementById('scale').onchange = function () {
