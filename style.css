@@ -43,9 +43,8 @@ body {
 }
 
 .submitImg {
-    z-index: 999;
     margin-top: 20px;
-    width: 77px;
+    width: 100px;
     left: 50%;
     transform: translateX(-50%);
     position: relative;

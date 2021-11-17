@@ -62,8 +62,7 @@ function handleFiles(e) {
 }
 
 function submitImg() {
-    $('.submitImg').hide();
-    $('.modal').hide();
+    $('.fa-spinner').show();
     let thumb = new Image;
     let cropRect = croppr.getValue();
     let canvas = document.createElement("canvas");
@@ -101,7 +100,9 @@ function submitImg() {
         $('#preview').attr('width', `${window.innerWidth * 0.8}px`);
         $('#preview').attr('height', `${window.innerWidth * 0.8}px`);
 
-        $('.loader').hide();
+        $('.submitImg').hide();
+        $('.modal').hide();
+
         $('.main-puzzle').show();
     }
     
