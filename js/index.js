@@ -45,8 +45,8 @@ let input = document.getElementById('formFile');
 input.addEventListener('change', handleFiles);
 
 function handleFiles(e) {
+    e.preventDefault();
     $('.card').hide();
-    $('.loader').show();
     let modal_img = document.getElementById('cropper');
     modal_img.src = URL.createObjectURL(e.target.files[0]);
     $('#cropper').on('load', function(){
@@ -57,7 +57,6 @@ function handleFiles(e) {
             minSize: [$(this).width(), $(this).width(), 'px'],
         });
     });    
-    $('.loader').hide();
     $('.modal').show();
     $('.submitImg').show();   
 }
@@ -65,8 +64,6 @@ function handleFiles(e) {
 function submitImg() {
     $('.submitImg').hide();
     $('.modal').hide();
-    $('.loader').show();
-    window.scrollTo(0,document.body.scrollHeight);
     let thumb = new Image;
     let cropRect = croppr.getValue();
     let canvas = document.createElement("canvas");
