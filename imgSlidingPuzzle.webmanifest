@@ -1,0 +1,21 @@
+{
+    "name": "Sliding Puzzle",
+    "short_name": "Sliding Puzzle",
+    "description": "Sliding Puzzle",
+    "icons": [
+        {
+            "src": "https://media.discordapp.net/attachments/904673398439940108/904749382312808448/KakaoTalk_20211102_000543309_16.jpg?width=32&height=32",
+            "sizes": "32x32",
+            "type": "image/jpg"
+        },
+        {
+            "src": "https://media.discordapp.net/attachments/904673398439940108/904749382312808448/KakaoTalk_20211102_000543309_16.jpg?width=512&height=512",
+            "sizes": "512x512",
+            "type": "image/jpg"
+        }
+    ],
+    "start_url": "/",
+    "display": "fullscreen",
+    "theme_color": "#FFFFFF",
+    "background_color": "#FFFFFF"
+}
